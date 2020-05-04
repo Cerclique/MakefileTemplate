@@ -23,14 +23,17 @@ OBJECTS_DIR=bin
 SOURCES=$(wildcard $(SOURCES_DIR)/*.cpp)
 OBJECTS=$(patsubst $(SOURCES_DIR)/%.cpp,$(OBJECTS_DIR)/%.o,$(SOURCES))
 
-# Logfile containing compilation log
-LOGFILE=build.log
-
 #########################
 ##	PROJECT SETTINGS   ##
 #########################
 
 # THIS PART HAS TO BE MODIFIED IN ORDER TO FIT YOUR PROJECT. CHECK README FOR MORE INFORMATION.
+
+# Compiler
+CXX=
+
+# Compilation flags
+CXXFLAGS=
 
 # Module XXX
 INCLUDE_MODULE_XXX=
@@ -40,18 +43,15 @@ LINK_MODULE_XXX=
 INCLUDE_MODULE_YYY=
 LINK_MODULE_YYY=
 
-# Compiler
-CXX=
-
-# Compilation flags
-CXXFLAGS=
-
 # Include and link flags based on INCLUDE_DIR (default) and modules defined previously
 INCLUDE_FLAGS= -I$(INCLUDE_DIR)
 LDFLAGS=
 
 # Name of the executable/library
 PROCESS_NAME=
+
+# Logfile containing compilation log
+LOGFILE=build.log
 
 ##################
 ##	BUILD STEP  ##
