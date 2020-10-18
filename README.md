@@ -26,8 +26,8 @@ The final executable (or library) is generated in `ProjectFolder`, next to the M
 ### Customization :
 
 The file is composed of mainly 3 parts : 
-- **General Settings** : No modification are needed there (99% of the time). These are settings to make the compilation possible and pretty.
 - **Project Settings** : All the modification concerning your project are to me made here. More information below.
+- **General Settings** : No modification are needed there (99% of the time). These are settings to make the compilation possible and pretty.
 - **Build Step** : Compilation steps to build the project. No modification needed.
 
 ### About Project Settings :
@@ -36,6 +36,7 @@ The following paramater are specific to the project and need to be changed accor
 
 - `CXX` : Compiler to use.
 - `CXXFLAGS` : Compilation options such as `-Wall` or `-O3`. By default, `-c` is added.
+- `EXTENSION` : Extension of source files to compile in `src` folder.
 - `PROCESS_NAME` : Name of the final executable/library.
 - `LOGFILE` : Path to the compilation logfile. By default, the file is generated at the root of the project.
 
@@ -66,6 +67,6 @@ Command avaiblable are :
 - `make debug` : Build the project in debug mode.
 - `make clean` : Delete all object files inside `bin` folder, the executable/library and the logfile. Can be used if you want to recompilation the whole project.
 
-At compile time, either `SUCCESS` or `FAIL` is displayed for each source file to indicate compilation status. The last one refer to the executable.
+At compile time, either `SUCCESS` or `FAIL` is displayed for each source file to indicate compilation status. The last step refer to the final executable.
 
 *Note : Logfile is deleted before each compilation.* 

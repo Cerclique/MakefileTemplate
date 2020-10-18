@@ -1,59 +1,62 @@
 #########################
-##	GENERAL SETTINGS   ##
-#########################
-
-# Color code
-BOLD_B=\033[1m
-BOLD_E=\033[0m
-RED=\033[0;31m
-GREEN=\033[0;32m
-NC=\033[0m
-
-# Macro for better display
-PRINT_NAME=@printf "%50s\t" $<
-PRINT_STATUS=@if [ $$? -eq 0 ]; then echo -e '$(GREEN)$(BOLD_B)[SUCCESS]$(BOLD_E)$(NC)'; else echo -e '$(RED)$(BOLD_B)[FAIL]$(BOLD_E)$(NC)'; fi
-PRINT_PROCESS_NAME=@printf "\n%50s\t" $@
-
-# Name of source, include and object folder (relative to Makefile path)
-SOURCES_DIR=src
-INCLUDE_DIR=include
-OBJECTS_DIR=bin
-
-# Reference to source and object files.
-SOURCES=$(wildcard $(SOURCES_DIR)/*.cpp)
-OBJECTS=$(patsubst $(SOURCES_DIR)/%.cpp,$(OBJECTS_DIR)/%.o,$(SOURCES))
-
-#########################
 ##  PROJECT SETTINGS   ##
 #########################
 
 # THIS PART HAS TO BE MODIFIED IN ORDER TO FIT YOUR PROJECT. CHECK README FOR MORE INFORMATION.
 
 # Compiler
-CXX=
+CXX = 
 
 # Compilation flags (-c for .o object generation)
-CXXFLAGS= -c
+CXXFLAGS = -c 
+
+# Source file extension
+EXTENSION = 
 
 # Module XXX
-INCLUDE_MODULE_XXX=
-LINK_MODULE_XXX=
-LIB_MODULE_XXX=
+INCLUDE_MODULE_XXX =
+LINK_MODULE_XXX =
+LIB_MODULE_XXX =
 
 # Module YYY
-INCLUDE_MODULE_YYY=
-LINK_MODULE_YYY=
-LIB_MODULE_YYY=
+INCLUDE_MODULE_YYY =
+LINK_MODULE_YYY =
+LIB_MODULE_YYY =
 
 # Include and link/lib flags composed of INCLUDE_DIR (default) and modules defined previously
-INCLUDE_FLAGS= -I$(INCLUDE_DIR)
-LDFLAGS=
+INCLUDE_FLAGS = -I$(INCLUDE_DIR)
+LDFLAGS =
 
 # Name of the executable/library
-PROCESS_NAME=
+PROCESS_NAME = 
 
 # Logfile containing compilation log
-LOGFILE=build.log
+LOGFILE = build.log
+
+#########################
+##	GENERAL SETTINGS   ##
+#########################
+
+# Color code
+BOLD_B = \033[1m
+BOLD_E = \033[0m
+RED = \033[0;31m
+GREEN = \033[0;32m
+NC = \033[0m
+
+# Macro for better display
+PRINT_NAME = @printf "%50s\t" $<
+PRINT_STATUS = @if [ $$? -eq 0 ]; then echo -e '$(GREEN)$(BOLD_B)[SUCCESS]$(BOLD_E)$(NC)'; else echo -e '$(RED)$(BOLD_B)[FAIL]$(BOLD_E)$(NC)'; fi
+PRINT_PROCESS_NAME = @printf "\n%50s\t" $@
+
+# Name of source, include and object folder (relative to Makefile path)
+SOURCES_DIR = src
+INCLUDE_DIR = include
+OBJECTS_DIR = bin
+
+# Reference to source and object files.
+SOURCES = $(wildcard $(SOURCES_DIR)/*.$(EXTENSION))
+OBJECTS = $(patsubst $(SOURCES_DIR)/%.$(EXTENSION),$(OBJECTS_DIR)/%.o,$(SOURCES))
 
 ##################
 ##  BUILD STEP  ##
@@ -80,7 +83,7 @@ $(PROCESS_NAME): $(OBJECTS)
 	@$(CXX) $(LDFLAGS) $^ -o $@  >> $(LOGFILE) 2>&1
 	@$(PRINT_STATUS)
 
-$(OBJECTS_DIR)/%.o: $(SOURCES_DIR)/%.cpp
+$(OBJECTS_DIR)/%.o: $(SOURCES_DIR)/%.$(EXTENSION)
 	@$(PRINT_NAME)
 	@$(CXX) $(CXXFLAGS) $(INCLUDE_FLAGS) $< -o $@ >> $(LOGFILE) 2>&1
 	@$(PRINT_STATUS)
