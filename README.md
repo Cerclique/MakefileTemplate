@@ -1,6 +1,6 @@
 # Makefile Template
 
-Simple Makefile template to build C/C++ application easily.
+Simple Makefile template to build C/C++ application, static or shared library easily.
 
 ## Description :
 
@@ -34,9 +34,10 @@ The file is composed of mainly 3 parts :
 
 The following paramater are specific to the project and need to be changed accordingly.
 
+- `TYPE` : Type of your module. `EXECUTABLE`, `STATIC_LIB` or `SHARED_LIB`.
 - `CXX` : Compiler to use.
-- `CXXFLAGS` : Compilation options such as `-Wall` or `-O3`. By default, `-c` is added.
-- `EXTENSION` : Extension of source files to compile in `src` folder.
+- `CXXFLAGS` : Compilation options such as `-Wall` or `-O3`. By default, `-c` is added (and mandatory).
+- `EXTENSION` : Extension of source files to compile in `src` folder (eg : cpp, c, cc, ...).
 - `PROCESS_NAME` : Name of the final executable/library.
 - `LOGFILE` : Path to the compilation logfile. By default, the file is generated at the root of the project.
 
@@ -55,11 +56,11 @@ LIB_MODULE_EXTMODULE= -lextmodule
 After defining each module, you just have to call them in `INCLUDE_FLAGS` and `LDFLAGS` that are used during compilation.
 
 ```
-INCLUDE_FLAGS= -I$(INCLUDE_DIR) -I$(INCLUDE_MODULE_EXTMODULE)
-LDFLAGS= -L$(LINK_MODULE_EXTMODULE) $(LIB_MODULE_EXTMODULE)
+INCLUDE_FLAGS= -I $(INCLUDE_DIR) -I $(INCLUDE_MODULE_EXTMODULE)
+LDFLAGS= -L $(LINK_MODULE_EXTMODULE) $(LIB_MODULE_EXTMODULE)
 ```
 
-*Note : `INCLUDE_FLAGS` contains `-I$(INCLUDE_DIR)` by default in order to use header defined in `include` folder.*
+*Note : `INCLUDE_FLAGS` contains `-I $(INCLUDE_DIR)` by default in order to use header defined in `include` folder.*
 
 ## Usage 
 Command avaiblable are :
