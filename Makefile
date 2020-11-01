@@ -4,14 +4,17 @@
 
 # THIS PART HAS TO BE MODIFIED IN ORDER TO FIT YOUR PROJECT. CHECK README FOR MORE INFORMATION.
 
+# Compilation type : EXECUTABLE / STATIC_LIB / SHARED_LIB
+TYPE =
+
 # Compiler
-CXX = 
+CXX =
 
 # Compilation flags (-c for .o object generation)
 CXXFLAGS = -c 
 
 # Source file extension
-EXTENSION = 
+EXTENSION =
 
 # Module XXX
 INCLUDE_MODULE_XXX =
@@ -28,7 +31,7 @@ INCLUDE_FLAGS = -I$(INCLUDE_DIR)
 LDFLAGS =
 
 # Name of the executable/library
-PROCESS_NAME = 
+PROCESS_NAME =
 
 # Logfile containing compilation log
 LOGFILE = build.log
@@ -80,12 +83,22 @@ clean: CLEAN_BEFORE_BUILD
 
 $(PROCESS_NAME): $(OBJECTS)
 	@$(PRINT_PROCESS_NAME)
-	@$(CXX) $(LDFLAGS) $^ -o $@  >> $(LOGFILE) 2>&1
+	@if [ $(TYPE) = EXECUTABLE ]; then
+		@$(CXX) $(LDFLAGS) $^ -o $@ >> $(LOGFILE) 2>&1
+	@elif [ $(TYPE) = STATIC_LIB ]; then
+		ar -crs $@ $^ >> $(LOGFILE) 2>&1
+	@else
+		@$(CXX) $(LDFLAGS) -shared $^ -o $@  >> $(LOGFILE) 2>&1
+	@fi
 	@$(PRINT_STATUS)
 
 $(OBJECTS_DIR)/%.o: $(SOURCES_DIR)/%.$(EXTENSION)
 	@$(PRINT_NAME)
-	@$(CXX) $(CXXFLAGS) $(INCLUDE_FLAGS) $< -o $@ >> $(LOGFILE) 2>&1
+	if [ $(TYPE) = SHARED_LIB ]; then
+		@$(CXX) $(CXXFLAGS) -fPIC $(INCLUDE_FLAGS) $< -o $@ >> $(LOGFILE) 2>&1
+	else
+		@$(CXX) $(CXXFLAGS) $(INCLUDE_FLAGS) $< -o $@ >> $(LOGFILE) 2>&1
+	fi
 	@$(PRINT_STATUS)
 
 CLEAN_BEFORE_BUILD:
