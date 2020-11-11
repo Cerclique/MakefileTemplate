@@ -65,9 +65,21 @@ OBJECTS = $(patsubst $(SOURCE_DIR)/%.$(SRC_EXTENSION),$(OBJECT_DIR)/%.o,$(SOURCE
 ##  BUILD STEP  ##
 ##################
 
+# Add mandatory compilation option for shared library
 ifeq ($(TARGET_TYPE), SHARED_LIB)
 	LDFLAGS += -shared
 	CXXFLAGS += -fPIC
+endif
+
+# Compute final name based on the type of the target
+ifeq ($(TARGET_TYPE), EXECUTABLE)
+	FULL_NAME = $(TARGET_NAME)
+else
+	ifeq ($(TARGET_TYPE), STATIC_LIB)
+		FULL_NAME = lib$(TARGET_NAME).a
+	else
+		FULL_NAME = lib$(TARGET_NAME).so
+	endif
 endif
 
 .PHONY: all
