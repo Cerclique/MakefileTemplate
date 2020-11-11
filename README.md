@@ -34,30 +34,35 @@ The file is composed of mainly 3 parts :
 
 The following paramater are specific to the project and need to be changed accordingly.
 
-- `TYPE` : Type of your module. `EXECUTABLE`, `STATIC_LIB` or `SHARED_LIB`.
+- `TARGET_TYPE` : Type of your module. `EXECUTABLE`, `STATIC_LIB` or `SHARED_LIB`.
+- `TARGET_NAME` : Name of the executable/library <sup>(1)</sup>.
+- `SRC_EXTENSION` : Extension of source files to compile in `src` folder (eg : cpp, c, ...).
 - `CXX` : Compiler to use.
 - `CXXFLAGS` : Compilation options such as `-Wall` or `-O3`. By default, `-c` is added (and mandatory).
-- `EXTENSION` : Extension of source files to compile in `src` folder (eg : cpp, c, cc, ...).
-- `PROCESS_NAME` : Name of the final executable/library.
 - `LOGFILE` : Path to the compilation logfile. By default, the file is generated at the root of the project.
+
+<sup>(1)</sup> : For static and shared library, full name of the library is automatically generated based on `TARGET_NAME` variable.
+Example : `TARGET_NAME = ComplexAR`
+- `STATIC_LIB` : `libComplexAR.a`
+- `SHARED_LIB` : `libComplexAR.so`
 
 #### Modules :
 
-To simplify use/configuration of external module/library in your project, you can use `INCLUDE_MODULE_XXX`, `LINK_MODULE_XXX` and `LIB_MODULE_XXX` (replace `XXX` with the name of the library). This allow to have separate declaration for each library.
+To simplify use/configuration of external module/library in your project, you can use `INCLUDE_DIR_MODULE_XXX`, `LIB_DIR_MODULE_XXX` and `LIB_MODULE_XXX` (replace `XXX` with the name of the library). This allow to have separate declaration for each library.
 
-For instance, if you have an external module `ExtModule`
+For instance, if you have an external module `ComplexMod`
 
 ```
-INCLUDE_MODULE_EXTMODULE= /path/to/ExtModule/include
-LINK_MODULE_EXTMODULE= /path/to/ExtModule/lib
-LIB_MODULE_EXTMODULE= -lextmodule
+INCLUDE_DIR_MODULE_COMPLEXMOD = /path/to/ComplexMod/include
+LIB_DIR_MODULE_COMPLEXMOD = /path/to/ComplexMod/lib
+LIB_MODULE_COMPLEXMOD = -lComplexMod
 ```
 
 After defining each module, you just have to call them in `INCLUDE_FLAGS` and `LDFLAGS` that are used during compilation.
 
 ```
-INCLUDE_FLAGS= -I $(INCLUDE_DIR) -I $(INCLUDE_MODULE_EXTMODULE)
-LDFLAGS= -L $(LINK_MODULE_EXTMODULE) $(LIB_MODULE_EXTMODULE)
+INCLUDE_FLAGS= -I $(INCLUDE_DIR) -I $(INCLUDE_DIR_MODULE_COMPLEXMOD)
+LDFLAGS= -L $(LIB_DIR_COMPLEXMOD) $(LIB_MODULE_COMPLEXEMOD)
 ```
 
 *Note : `INCLUDE_FLAGS` contains `-I $(INCLUDE_DIR)` by default in order to use header defined in `include` folder.*
@@ -67,7 +72,5 @@ Command avaiblable are :
 - `make` : Build the project in release mode.
 - `make debug` : Build the project in debug mode.
 - `make clean` : Delete all object files inside `bin` folder, the executable/library and the logfile. Can be used if you want to recompilation the whole project.
-
-At compile time, either `SUCCESS` or `FAIL` is displayed for each source file to indicate compilation status. The last step refer to the final executable.
 
 *Note : Logfile is deleted before each compilation.* 
