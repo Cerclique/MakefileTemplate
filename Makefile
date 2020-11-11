@@ -91,19 +91,19 @@ all: compil
 debug: CXXFLAGS += -g
 debug: compil
 
-compil: CLEAN_BEFORE_BUILD $(TARGET_NAME)
+compil: CLEAN_BEFORE_BUILD $(FULL_NAME)
 
 .PHONY: clean
 clean: CLEAN_BEFORE_BUILD
 	@rm -f $(OBJECTS)
 
 
-$(TARGET_NAME): $(OBJECTS)
+$(FULL_NAME): $(OBJECTS)
 	@$(PRINT_TARGET_NAME)
 	@if [ $(TARGET_TYPE) = STATIC_LIB ]; then
 		@ar -rcs $@ $(LDFLAGS) $^ >> $(LOGFILE) 2>&1
 	@else
-		@$(CXX) $(LDFLAGS) $^ -o $@  >> $(LOGFILE) 2>&1
+		@$(CXX) -o $@ $^ $(LDFLAGS) >> $(LOGFILE) 2>&1
 	@fi
 	@$(PRINT_STATUS)
 
@@ -114,7 +114,7 @@ $(OBJECT_DIR)/%.o: $(SOURCE_DIR)/%.$(SRC_EXTENSION)
 
 CLEAN_BEFORE_BUILD:
 	@rm -f $(LOGFILE)
-	@rm -f $(TARGET_NAME)
+	@rm -f $(FULL_NAME)
 	@if [ ! -d "$(OBJECT_DIR)" ]; then
 	@	mkdir $(OBJECT_DIR)
 	@fi
