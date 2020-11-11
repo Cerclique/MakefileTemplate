@@ -65,6 +65,11 @@ OBJECTS = $(patsubst $(SOURCE_DIR)/%.$(SRC_EXTENSION),$(OBJECT_DIR)/%.o,$(SOURCE
 ##  BUILD STEP  ##
 ##################
 
+ifeq ($(TARGET_TYPE), SHARED_LIB)
+	LDFLAGS += -shared
+	CXXFLAGS += -fPIC
+endif
+
 .PHONY: all
 .ONESHELL:
 all: compil
@@ -83,22 +88,16 @@ clean: CLEAN_BEFORE_BUILD
 
 $(TARGET_NAME): $(OBJECTS)
 	@$(PRINT_TARGET_NAME)
-	@if [ $(TARGET_TYPE) = EXECUTABLE ]; then
-		@$(CXX) $(LDFLAGS) $^ -o $@ >> $(LOGFILE) 2>&1
-	@elif [ $(TARGET_TYPE) = STATIC_LIB ]; then
-		ar -crs $@ $^ >> $(LOGFILE) 2>&1
+	@if [ $(TARGET_TYPE) = STATIC_LIB ]; then
+		@ar -rcs $@ $(LDFLAGS) $^ >> $(LOGFILE) 2>&1
 	@else
-		@$(CXX) $(LDFLAGS) -shared $^ -o $@  >> $(LOGFILE) 2>&1
+		@$(CXX) $(LDFLAGS) $^ -o $@  >> $(LOGFILE) 2>&1
 	@fi
 	@$(PRINT_STATUS)
 
 $(OBJECT_DIR)/%.o: $(SOURCE_DIR)/%.$(SRC_EXTENSION)
 	@$(PRINT_NAME)
-	if [ $(TARGET_TYPE) = SHARED_LIB ]; then
-		@$(CXX) $(CXXFLAGS) -fPIC $(INCLUDE_FLAGS) $< -o $@ >> $(LOGFILE) 2>&1
-	else
-		@$(CXX) $(CXXFLAGS) $(INCLUDE_FLAGS) $< -o $@ >> $(LOGFILE) 2>&1
-	fi
+	@$(CXX) $(CXXFLAGS) $(INCLUDE_FLAGS) $< -o $@ >> $(LOGFILE) 2>&1
 	@$(PRINT_STATUS)
 
 CLEAN_BEFORE_BUILD:
